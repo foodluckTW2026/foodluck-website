@@ -3,57 +3,61 @@
 import { useState } from "react";
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    role: "consumer",
-    message: "",
-  });
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        role: "consumer",
+        message: "",
+    });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const handleChange = (
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >,
+    ) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // 後端串接如有需要再處理
-    alert("感謝你的來信！我們會盡快回覆。");
-  };
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // 後端串接如有需要再處理
+        alert("感謝你的來信！我們會盡快回覆。");
+    };
 
-  return (
-    <section id="contact" className="py-24 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          {/* Left: Info */}
-          <div>
-            <span className="text-xs font-semibold tracking-widest text-primary uppercase">
-              Contact
-            </span>
-            <h2 className="mt-3 text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-6">
-              想合作或有
-              <br />
-              任何問題？
-            </h2>
-            <p className="text-gray-500 leading-relaxed mb-8">
-              無論你是想加入的商家、媒體夥伴，還是有任何使用上的問題，我們都很樂意聽你說。
-            </p>
-            <div className="space-y-4">
-              <div>
-                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">Email</p>
-                <a
-                  href="mailto:foodluck2026@gmail.com"
-                  className="text-gray-900 font-semibold hover:text-primary transition-colors"
-                >
-                  foodluck2026@gmail.com
-                </a>
-              </div>
-            </div>
-          </div>
+    return (
+        <section id="contact" className="py-24 bg-gray-50">
+            <div className="max-w-6xl mx-auto px-6">
+                <div className="grid md:grid-cols-2 gap-16 items-start">
+                    {/* Left: Info */}
+                    <div>
+                        <span className="text-xs font-semibold tracking-widest text-primary uppercase">
+                            Contact
+                        </span>
+                        <h2 className="mt-3 text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-6">
+                            想合作或有
+                            <br />
+                            任何問題？
+                        </h2>
+                        <p className="text-gray-500 leading-relaxed mb-8">
+                            無論你是想加入的商家、媒體夥伴，還是有任何使用上的問題，我們都很樂意聽你說。
+                        </p>
+                        <div className="space-y-4">
+                            <div>
+                                <p className="text-xs text-gray-400 uppercase tracking-widest mb-1">
+                                    Email
+                                </p>
+                                <a
+                                    href="mailto:foodluck2026@gmail.com"
+                                    className="text-gray-900 font-semibold hover:text-primary transition-colors"
+                                >
+                                    foodluck2026@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                    </div>
 
-          {/* Right: Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* Right: Form */}
+                    {/* <form onSubmit={handleSubmit} className="space-y-5">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="name">
@@ -127,9 +131,9 @@ export default function Contact() {
             >
               送出訊息
             </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
+          </form> */}
+                </div>
+            </div>
+        </section>
+    );
 }
