@@ -1,7 +1,12 @@
 import type { NextConfig } from "next";
 
+const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
+const repoName = "foodluck-website";
+
 const nextConfig: NextConfig = {
+  output: "export",
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -17,6 +22,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  basePath: isGitHubPages ? `/${repoName}` : undefined,
+  assetPrefix: isGitHubPages ? `/${repoName}/` : undefined,
 };
 
 export default nextConfig;
