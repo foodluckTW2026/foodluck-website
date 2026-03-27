@@ -1,7 +1,18 @@
 import type { NextConfig } from "next";
 
-const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
-const repoName = "foodluck-website";
+const pagesBaseUrl = process.env.PAGES_BASE_URL;
+const normalizedBasePath = (() => {
+  if (!pagesBaseUrl) {
+    return undefined;
+  }
+
+  try {
+    const { pathname } = new URL(pagesBaseUrl);
+    return pathname === "/" ? undefined : pathname.replace(/\/$/, "");
+  } catch {
+    return undefined;
+  }
+})();
 
 const nextConfig: NextConfig = {
   output: "export",
@@ -22,8 +33,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  basePath: isGitHubPages ? `/${repoName}` : undefined,
-  assetPrefix: isGitHubPages ? `/${repoName}/` : undefined,
+  basePath: normalizedBasePath,
+  assetPrefix: normalizedBasePath ? `${normalizedBasePath}/` : undefined,
 };
 
 export default nextConfig;
