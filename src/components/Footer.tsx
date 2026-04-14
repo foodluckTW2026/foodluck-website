@@ -17,6 +17,9 @@ export default function Footer() {
                         <p className="text-gray-400 text-sm mt-2">
                             福來科技有限公司
                         </p>
+                        <p className="text-gray-400 text-sm mt-2">
+                            統一編號:62214273
+                        </p>
                     </div>
 
                     {/* Social Links */}
