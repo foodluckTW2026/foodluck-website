@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const socialLinks = [
     { label: "Instagram", href: "#" },
     { label: "Facebook", href: "#" },
@@ -40,14 +42,20 @@ export default function Footer() {
                     <p className="text-gray-500 text-xs">
                         © 2026 FOODLUCK 福來科技有限公司
                     </p>
-                    {/* <div className="flex items-center gap-6">
-            <a href="#" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
-              隱私政策
-            </a>
-            <a href="#" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
-              服務條款
-            </a>
-          </div> */}
+                    <div className="flex items-center gap-6">
+                        <Link
+                            href="/privacy"
+                            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                        >
+                            隱私權政策
+                        </Link>
+                        <Link
+                            href="/terms"
+                            className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+                        >
+                            服務條款
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>

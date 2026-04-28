@@ -47,10 +47,10 @@ export default function Contact() {
                                     Email
                                 </p>
                                 <a
-                                    href="mailto:foodluck2026@gmail.com"
+                                    href="mailto:service@foodluck.com.tw"
                                     className="text-gray-900 font-semibold hover:text-primary transition-colors"
                                 >
-                                    foodluck2026@gmail.com
+                                    service@foodluck.com.tw
                                 </a>
                             </div>
                         </div>

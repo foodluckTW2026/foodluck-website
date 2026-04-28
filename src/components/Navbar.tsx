@@ -1,12 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const navLinks = [
-  { label: "關於我們", href: "#about" },
-  { label: "給消費者", href: "#consumers" },
-  { label: "給商家", href: "#merchants" },
-  { label: "聯絡我們", href: "#contact" },
+  { label: "關於我們", href: "/#about" },
+  { label: "給消費者", href: "/#consumers" },
+  { label: "給商家", href: "/#merchants" },
+  { label: "聯絡我們", href: "/#contact" },
 ];
 
 export default function Navbar() {
@@ -27,7 +28,7 @@ export default function Navbar() {
     >
       <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <span
             className={`text-2xl font-black tracking-tight transition-colors duration-300 ${
               scrolled ? "text-primary" : "text-white"
@@ -35,20 +36,20 @@ export default function Navbar() {
           >
             FOODLUCK
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <ul className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
+              <Link
                 href={link.href}
                 className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
                   scrolled ? "text-gray-700" : "text-white/90"
                 }`}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -83,13 +84,13 @@ export default function Navbar() {
           <ul className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <a
+                <Link
                   href={link.href}
                   className="text-gray-800 font-medium hover:text-primary transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
