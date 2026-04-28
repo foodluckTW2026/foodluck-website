@@ -204,15 +204,15 @@ function PolicyTable({
     rows: string[][];
 }>) {
     return (
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-left">
+        <div className="min-w-0 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+            <div className="min-w-0">
+                <table className="w-full table-fixed divide-y divide-gray-200 text-left">
                     <thead className="bg-gray-50">
                         <tr>
                             {headers.map((header) => (
                                 <th
                                     key={header}
-                                    className="px-4 py-3 text-sm font-semibold tracking-wide text-gray-700"
+                                    className="px-3 py-3 text-xs font-semibold tracking-wide text-gray-700 sm:px-4 sm:text-sm"
                                     scope="col"
                                 >
                                     {header}
@@ -226,7 +226,7 @@ function PolicyTable({
                                 {row.map((cell) => (
                                     <td
                                         key={cell}
-                                        className="px-4 py-3 text-sm leading-7 text-gray-600"
+                                        className="px-3 py-3 text-xs leading-6 text-gray-600 [overflow-wrap:anywhere] sm:px-4 sm:text-sm sm:leading-7"
                                     >
                                         {cell}
                                     </td>
@@ -319,7 +319,7 @@ export default function PrivacyPage() {
                             </div>
                         </aside>
 
-                        <div className="space-y-10">
+                        <div className="min-w-0 space-y-10">
                             <Section
                                 id="controller"
                                 title="第一條 資料控制者資訊"
@@ -351,7 +351,7 @@ export default function PrivacyPage() {
                                             <p className="text-sm font-semibold text-gray-500">
                                                 {label}
                                             </p>
-                                            <p className="mt-2 text-base font-medium leading-7 text-gray-800">
+                                            <p className="mt-2 text-base font-medium leading-7 text-gray-800 [overflow-wrap:anywhere]">
                                                 {value}
                                             </p>
                                         </div>
@@ -513,7 +513,7 @@ export default function PrivacyPage() {
                                         href="https://tools.google.com/dlpage/gaoptout"
                                         target="_blank"
                                         rel="noreferrer"
-                                        className="ml-1 font-semibold text-primary underline decoration-primary/40 underline-offset-4"
+                                        className="ml-1 font-semibold text-primary underline decoration-primary/40 underline-offset-4 [overflow-wrap:anywhere]"
                                     >
                                         Google Analytics 停用附加元件
                                     </a>
@@ -649,7 +649,7 @@ export default function PrivacyPage() {
                                             <p className="text-sm font-semibold text-gray-500">
                                                 {label}
                                             </p>
-                                            <p className="mt-2 text-base leading-7 text-gray-800">
+                                            <p className="mt-2 text-base leading-7 text-gray-800 [overflow-wrap:anywhere]">
                                                 {value}
                                             </p>
                                         </div>
