@@ -31,33 +31,81 @@ export type StoreApplicationPayload = {
   email: string;
   phone: string;
   address: string;
-  tax_id: string;
-  food_business_license_number?: string;
+  tax_id?: string;
+  company_name?: string;
+  food_business_license_number: string;
   description?: string;
   reason?: string;
   category_ids: number[];
+
+  // 收款帳戶——填寫
+  bank_code?: string;
+  bank_name?: string;
+  bank_branch_code?: string;
+  bank_branch_name?: string;
+  bank_account_number?: string;
+  bank_account_name?: string;
+
+  // 收款帳戶——上傳（File 物件，與「填寫」二擇一）
+  bank_book_image?: File;
 };
 
-export type StoreApplicationResult = {
-  ok: true;
-  message: string;
-  data: { id: number; status: string };
-} | {
-  ok: false;
-  message: string;
-  errors?: Record<string, string[]>;
-};
+export type StoreApplicationResult =
+  | {
+      ok: true;
+      message: string;
+      data: { id: number; status: string };
+    }
+  | {
+      ok: false;
+      message: string;
+      errors?: Record<string, string[]>;
+    };
 
 export async function submitStoreApplication(
   payload: StoreApplicationPayload,
 ): Promise<StoreApplicationResult> {
+  // multipart：圖片要走 FormData，純 JSON 場景也統一用 FormData，後端皆可接
+  const formData = new FormData();
+
+  const set = (key: string, value: string | undefined) => {
+    if (value !== undefined && value !== "") {
+      formData.append(key, value);
+    }
+  };
+
+  set("name", payload.name);
+  set("owner_name", payload.owner_name);
+  set("email", payload.email);
+  set("phone", payload.phone);
+  set("address", payload.address);
+  set("food_business_license_number", payload.food_business_license_number);
+  set("tax_id", payload.tax_id);
+  set("company_name", payload.company_name);
+  set("description", payload.description);
+  set("reason", payload.reason);
+
+  // 後端會把 string JSON 解開成陣列
+  formData.append("category_ids", JSON.stringify(payload.category_ids));
+
+  if (payload.bank_book_image) {
+    formData.append("bank_book_image", payload.bank_book_image);
+  } else {
+    set("bank_code", payload.bank_code);
+    set("bank_name", payload.bank_name);
+    set("bank_branch_code", payload.bank_branch_code);
+    set("bank_branch_name", payload.bank_branch_name);
+    set("bank_account_number", payload.bank_account_number);
+    set("bank_account_name", payload.bank_account_name);
+  }
+
   const res = await fetch(`${API_BASE_URL}/store/applications`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      // 注意：不要自己加 Content-Type，瀏覽器會自動補 multipart boundary
       Accept: "application/json",
     },
-    body: JSON.stringify(payload),
+    body: formData,
   });
 
   const json = await res.json().catch(() => null);

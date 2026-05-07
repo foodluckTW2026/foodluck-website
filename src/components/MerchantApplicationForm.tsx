@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   fetchCategories,
   submitStoreApplication,
   type Category,
   type StoreApplicationPayload,
 } from "@/lib/api";
+
+type BankMode = "text" | "image";
 
 type FormState = {
   name: string;
@@ -15,10 +17,18 @@ type FormState = {
   phone: string;
   address: string;
   tax_id: string;
+  company_name: string;
   food_business_license_number: string;
   description: string;
   reason: string;
   category_ids: number[];
+
+  bank_code: string;
+  bank_name: string;
+  bank_branch_code: string;
+  bank_branch_name: string;
+  bank_account_number: string;
+  bank_account_name: string;
 };
 
 const initialState: FormState = {
@@ -28,14 +38,29 @@ const initialState: FormState = {
   phone: "",
   address: "",
   tax_id: "",
+  company_name: "",
   food_business_license_number: "",
   description: "",
   reason: "",
   category_ids: [],
+  bank_code: "",
+  bank_name: "",
+  bank_branch_code: "",
+  bank_branch_name: "",
+  bank_account_number: "",
+  bank_account_name: "",
 };
+
+const ALLOWED_IMAGE_EXT = /\.(jpe?g|png|webp|heic|heif)$/i;
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export default function MerchantApplicationForm() {
   const [form, setForm] = useState<FormState>(initialState);
+  const [bankMode, setBankMode] = useState<BankMode>("text");
+  const [bankImage, setBankImage] = useState<File | null>(null);
+  const [bankImageError, setBankImageError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [categoryError, setCategoryError] = useState<string | null>(null);
@@ -92,6 +117,32 @@ export default function MerchantApplicationForm() {
     });
   };
 
+  const handleBankImage = (file: File | null) => {
+    setBankImageError(null);
+    if (!file) {
+      setBankImage(null);
+      return;
+    }
+    if (!ALLOWED_IMAGE_EXT.test(file.name)) {
+      setBankImageError("僅支援 JPG / PNG / WebP / HEIC 圖片");
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setBankImageError("圖片不可超過 10MB");
+      return;
+    }
+    setBankImage(file);
+  };
+
+  const switchBankMode = (mode: BankMode) => {
+    setBankMode(mode);
+    setBankImageError(null);
+    if (mode === "text") {
+      setBankImage(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
@@ -106,14 +157,29 @@ export default function MerchantApplicationForm() {
       email: form.email.trim(),
       phone: form.phone.trim(),
       address: form.address.trim(),
-      tax_id: form.tax_id.trim(),
+      food_business_license_number: form.food_business_license_number.trim(),
       category_ids: form.category_ids,
-      ...(form.food_business_license_number.trim()
-        ? { food_business_license_number: form.food_business_license_number.trim() }
-        : {}),
+      ...(form.tax_id.trim() ? { tax_id: form.tax_id.trim() } : {}),
+      ...(form.company_name.trim() ? { company_name: form.company_name.trim() } : {}),
       ...(form.description.trim() ? { description: form.description.trim() } : {}),
       ...(form.reason.trim() ? { reason: form.reason.trim() } : {}),
     };
+
+    if (bankMode === "image") {
+      if (!bankImage) {
+        setBankImageError("請選擇存摺封面照片");
+        setSubmitting(false);
+        return;
+      }
+      payload.bank_book_image = bankImage;
+    } else {
+      payload.bank_code = form.bank_code.trim();
+      payload.bank_name = form.bank_name.trim();
+      payload.bank_branch_code = form.bank_branch_code.trim();
+      payload.bank_branch_name = form.bank_branch_name.trim();
+      payload.bank_account_number = form.bank_account_number.trim();
+      payload.bank_account_name = form.bank_account_name.trim();
+    }
 
     const result = await submitStoreApplication(payload);
     setSubmitting(false);
@@ -121,6 +187,8 @@ export default function MerchantApplicationForm() {
     if (result.ok) {
       setSuccess({ id: result.data.id });
       setForm(initialState);
+      setBankImage(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
@@ -247,16 +315,26 @@ export default function MerchantApplicationForm() {
         placeholder="例：台北市中正區忠孝東路一段 1 號"
       />
 
-      <Field
-        label="統一編號（選填）"
-        name="tax_id"
-        value={form.tax_id}
-        onChange={handleChange}
-        error={fieldError("tax_id")}
-        placeholder="8 碼數字，如有公司行號請填寫"
-        inputMode="numeric"
-        maxLength={8}
-      />
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field
+          label="統一編號（選填）"
+          name="tax_id"
+          value={form.tax_id}
+          onChange={handleChange}
+          error={fieldError("tax_id")}
+          placeholder="8 碼數字，如有公司行號請填寫"
+          inputMode="numeric"
+          maxLength={8}
+        />
+        <Field
+          label="公司登記名稱（選填）"
+          name="company_name"
+          value={form.company_name}
+          onChange={handleChange}
+          error={fieldError("company_name")}
+          placeholder="例：幸福食品有限公司"
+        />
+      </div>
 
       <div>
         <label className="mb-2 block text-sm font-semibold text-gray-800">
@@ -301,6 +379,157 @@ export default function MerchantApplicationForm() {
         )}
       </div>
 
+      {/* Bank section with mode toggle */}
+      <div className="rounded-2xl border border-gray-200 bg-gray-50 p-6">
+        <div className="mb-4 flex items-baseline justify-between gap-4">
+          <h3 className="text-base font-bold text-gray-900">
+            收款帳戶 <span className="text-red-500">*</span>
+          </h3>
+          <p className="text-xs text-gray-500">填寫資訊或上傳存摺封面，二擇一</p>
+        </div>
+
+        <div className="mb-5 inline-flex rounded-full border border-gray-300 bg-white p-1">
+          <button
+            type="button"
+            onClick={() => switchBankMode("text")}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              bankMode === "text"
+                ? "bg-primary text-white"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            填寫資訊
+          </button>
+          <button
+            type="button"
+            onClick={() => switchBankMode("image")}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              bankMode === "image"
+                ? "bg-primary text-white"
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            上傳存摺封面
+          </button>
+        </div>
+
+        {bankMode === "text" ? (
+          <div className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="戶名"
+                name="bank_account_name"
+                value={form.bank_account_name}
+                onChange={handleChange}
+                error={fieldError("bank_account_name")}
+                required
+                placeholder="存摺戶名"
+              />
+              <Field
+                label="帳號"
+                name="bank_account_number"
+                value={form.bank_account_number}
+                onChange={handleChange}
+                error={fieldError("bank_account_number")}
+                required
+                placeholder="僅數字／可包含 -"
+              />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="銀行代碼（選填）"
+                name="bank_code"
+                value={form.bank_code}
+                onChange={handleChange}
+                error={fieldError("bank_code")}
+                placeholder="例：004"
+              />
+              <Field
+                label="銀行名稱（選填）"
+                name="bank_name"
+                value={form.bank_name}
+                onChange={handleChange}
+                error={fieldError("bank_name")}
+                placeholder="例：台灣銀行"
+              />
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field
+                label="分行代碼（選填）"
+                name="bank_branch_code"
+                value={form.bank_branch_code}
+                onChange={handleChange}
+                error={fieldError("bank_branch_code")}
+              />
+              <Field
+                label="分行名稱（選填）"
+                name="bank_branch_name"
+                value={form.bank_branch_name}
+                onChange={handleChange}
+                error={fieldError("bank_branch_name")}
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <label
+              htmlFor="bank_book_image"
+              className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-300 bg-white px-6 py-10 text-center transition-colors hover:border-primary"
+            >
+              {bankImage ? (
+                <>
+                  <span className="text-sm font-semibold text-gray-900">
+                    {bankImage.name}
+                  </span>
+                  <span className="mt-1 text-xs text-gray-500">
+                    {(bankImage.size / 1024 / 1024).toFixed(2)} MB ・ 點擊更換
+                  </span>
+                </>
+              ) : (
+                <>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="mb-2 h-8 w-8 text-gray-400"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" x2="12" y1="3" y2="15" />
+                  </svg>
+                  <span className="text-sm font-semibold text-gray-700">
+                    點擊選擇存摺封面照片
+                  </span>
+                  <span className="mt-1 text-xs text-gray-500">
+                    JPG / PNG / WebP / HEIC，最大 10MB
+                  </span>
+                </>
+              )}
+              <input
+                id="bank_book_image"
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
+                className="hidden"
+                onChange={(e) => handleBankImage(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            {(bankImageError || fieldError("bank_book_image")) && (
+              <p className="text-sm text-red-600">
+                {bankImageError ?? fieldError("bank_book_image")}
+              </p>
+            )}
+            <p className="text-xs leading-6 text-gray-500">
+              系統會自動移除照片中的位置／拍攝資訊（EXIF）後，僅將圖片資料儲存於後台。
+            </p>
+          </div>
+        )}
+      </div>
+
       <Textarea
         label="店家簡介（選填）"
         name="description"
@@ -327,7 +556,7 @@ export default function MerchantApplicationForm() {
         <a href="/privacy" className="ml-1 text-primary hover:underline">
           隱私權政策
         </a>
-        。後續匯款帳戶等敏感資訊，將於審核通過、合作確認後由本公司專人協助補登。
+        。
       </p>
 
       <button
