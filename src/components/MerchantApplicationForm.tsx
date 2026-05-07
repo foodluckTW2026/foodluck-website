@@ -204,15 +204,13 @@ export default function MerchantApplicationForm() {
           placeholder="例：王小明"
         />
         <Field
-          label="統一編號"
-          name="tax_id"
-          value={form.tax_id}
+          label="食品業者登錄字號"
+          name="food_business_license_number"
+          value={form.food_business_license_number}
           onChange={handleChange}
-          error={fieldError("tax_id")}
+          error={fieldError("food_business_license_number")}
           required
-          placeholder="8 碼數字"
-          inputMode="numeric"
-          maxLength={8}
+          placeholder="例：A-123-456789-00000-0"
         />
       </div>
 
@@ -250,12 +248,14 @@ export default function MerchantApplicationForm() {
       />
 
       <Field
-        label="食品業者登錄字號（選填）"
-        name="food_business_license_number"
-        value={form.food_business_license_number}
+        label="統一編號（選填）"
+        name="tax_id"
+        value={form.tax_id}
         onChange={handleChange}
-        error={fieldError("food_business_license_number")}
-        placeholder="如已申請可填寫；尚未申請可空白"
+        error={fieldError("tax_id")}
+        placeholder="8 碼數字，如有公司行號請填寫"
+        inputMode="numeric"
+        maxLength={8}
       />
 
       <div>
