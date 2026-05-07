@@ -1,5 +1,5 @@
-"use client";
 import Image from "next/image";
+import Link from "next/link";
 
 const benefits = [
     {
@@ -23,9 +23,6 @@ const benefits = [
 ];
 
 export default function ForMerchants() {
-    const handleClick = () => {
-        alert("籌備中，敬請期待!");
-    };
     return (
         <section id="merchants" className="py-24 bg-gray-50">
             <div className="max-w-6xl mx-auto px-6">
@@ -70,12 +67,12 @@ export default function ForMerchants() {
 
                 {/* CTA */}
                 <div className="flex justify-center">
-                    <a
-                        className="inline-flex items-center gap-2 border-2 border-accent text-accent font-semibold px-10 py-4 rounded-full hover:bg-accent hover:text-white hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
-                        onClick={handleClick}
+                    <Link
+                        href="/merchant-apply"
+                        className="inline-flex items-center gap-2 border-2 border-accent text-accent font-semibold px-10 py-4 rounded-full hover:bg-accent hover:text-white hover:-translate-y-0.5 transition-all duration-200"
                     >
                         免費申請加入
-                    </a>
+                    </Link>
                 </div>
             </div>
         </section>

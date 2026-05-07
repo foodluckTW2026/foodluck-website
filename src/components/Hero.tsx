@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
     const handleClick = () => {
@@ -50,12 +51,12 @@ export default function Hero() {
                         >
                             消費者 — 下載 App
                         </a>
-                        <a
-                            className="inline-flex items-center justify-center min-w-[200px] bg-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-accent/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-accent/30 cursor-pointer"
-                            onClick={handleClick}
+                        <Link
+                            href="/merchant-apply"
+                            className="inline-flex items-center justify-center min-w-[200px] bg-accent text-white font-semibold px-8 py-4 rounded-full hover:bg-accent/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-accent/30"
                         >
                             商家 — 加入合作
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
