@@ -3,15 +3,15 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 
 const eligibilityItems = [
-    "具有合法使用電子付款工具之能力。",
-    "提供真實有效之 Email 信箱，並完成 Email 認證。",
+    "提供真實有效之手機號碼，並完成手機號碼驗證。",
+    "具有於取餐現場完成付款之能力。",
     "同意本條款及本平台之隱私權政策。",
 ];
 
 const purchaseFlowItems = [
     "於 APP 瀏覽附近店家，選擇欲購買之 Luckie Bag。",
-    "確認取餐時段後完成付款。",
-    "依指定取餐時段前往店家，出示訂單 QR Code。",
+    "確認取餐時段後完成預約。",
+    "依指定取餐時段前往店家，出示訂單 QR Code，並於現場完成付款。",
     "取餐完成後，歡迎於 APP 留下評價。",
 ];
 
@@ -27,29 +27,6 @@ const allergenItems = [
     "魚類",
     "芒果",
     "亞硫酸鹽（蜜餞、果乾等）",
-];
-
-const refundRows = [
-    [
-        "食物有腐敗、發霉、異味等明顯變質",
-        "全額退款",
-        "另提供折價券補償",
-        "店家記 2 點",
-    ],
-    [
-        "食物份量明顯不足",
-        "依比例退款或全額退款（由本平台審核認定）",
-        "提供折價券補償",
-        "店家記 1 點",
-    ],
-    [
-        "店家無法提供 Luckie Bag（臨時取消）",
-        "全額退款",
-        "提供折價券補償",
-        "不記點",
-    ],
-    ["食物不符合個人口味", "不退款", "無", "不記點"],
-    ["消費者取餐逾時未取", "不退款", "無", "不記點"],
 ];
 
 const platformResponsibilityItems = [
@@ -121,50 +98,6 @@ function BulletList({ items }: Readonly<{ items: string[] }>) {
     );
 }
 
-function TermsTable({
-    headers,
-    rows,
-}: Readonly<{
-    headers: string[];
-    rows: string[][];
-}>) {
-    return (
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 text-left">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            {headers.map((header) => (
-                                <th
-                                    key={header}
-                                    className="px-4 py-3 text-sm font-semibold tracking-wide text-gray-700"
-                                    scope="col"
-                                >
-                                    {header}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {rows.map((row) => (
-                            <tr key={row.join("-")} className="align-top">
-                                {row.map((cell) => (
-                                    <td
-                                        key={cell}
-                                        className="px-4 py-3 text-sm leading-7 text-gray-600"
-                                    >
-                                        {cell}
-                                    </td>
-                                ))}
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    );
-}
-
 export default function TermsPage() {
     return (
         <>
@@ -180,8 +113,8 @@ export default function TermsPage() {
                                 FOODLUCK 消費者服務條款
                             </h1>
                             <div className="space-y-2 text-base leading-8 text-white/80 md:text-lg">
-                                <p>版本：1.1</p>
-                                <p>最後更新日期：115 年 4 月 28 日</p>
+                                <p>版本：1.2</p>
+                                <p>最後更新日期：115 年 6 月 23 日</p>
                             </div>
                             <p className="max-w-2xl text-base leading-8 text-white/85 md:text-lg">
                                 請於使用本服務前詳細閱讀以下條款。當您完成首次訂單並點擊「同意服務條款」時，即表示您已閱讀、理解並同意接受本條款之所有內容。
@@ -213,7 +146,7 @@ export default function TermsPage() {
                                         ["payment", "第六條 付款方式"],
                                         [
                                             "complaint",
-                                            "第七條 申訴、退款與補償",
+                                            "第七條 申訴、費用爭議與補償",
                                         ],
                                         [
                                             "responsibility",
@@ -267,7 +200,7 @@ export default function TermsPage() {
                             <Section id="account" title="第三條 帳號註冊與管理">
                                 <BulletList
                                     items={[
-                                        "您須以有效 Email 信箱完成註冊並通過認證，方可使用本平台完整功能。",
+                                        "您須以有效手機號碼完成註冊並通過驗證，方可使用本平台完整功能。",
                                         "您應妥善保管帳號密碼，不得將帳號提供予他人使用。帳號下之所有行為均視為您本人之行為，相關責任由您承擔。",
                                         "如發現帳號遭盜用或異常使用，請立即通知本平台客服。",
                                         "本平台保有審核、暫停或終止帳號之權利，如發現使用者有違反本條款之行為，得不經事先通知逕行處理。",
@@ -296,7 +229,7 @@ export default function TermsPage() {
                                         </h3>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
                                             本平台所提供之 Luckie Bag
-                                            內含生鮮、餐飲食品，屬《通訊交易解除權合理例外情事適用準則》第二條第一款「易於腐敗、保存期限較短或解約時即將逾期」之商品。因此，本服務排除《消費者保護法》第十九條第一項七日猶豫期（鑑賞期）之適用。消費者完成訂單並付款後，除本條款明定之退款情形外，不得以任意個人因素要求取消訂單或退款。
+                                            內含生鮮、餐飲食品，屬《通訊交易解除權合理例外情事適用準則》第二條第一款「易於腐敗、保存期限較短或解約時即將逾期」之商品。因此，本服務排除《消費者保護法》第十九條第一項七日猶豫期（鑑賞期）之適用。消費者完成預約後，除本條款明定之取消情形外，不得以任意個人因素要求取消預約。
                                         </p>
                                     </div>
 
@@ -316,7 +249,7 @@ export default function TermsPage() {
                                             4.4 取餐規定
                                         </h3>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
-                                            消費者應於店家設定之指定取餐時段內完成取餐。逾時未取者，視為消費者自行放棄，恕不退款。
+                                            消費者應於店家設定之指定取餐時段內完成取餐。逾時未取者，視為消費者自行放棄該筆預約，且本服務採現場付款方式，消費者無需支付任何費用。惟為維護平台秩序及店家權益，逾時未取將計入消費者之違規紀錄：累計達二次將收到平台警告通知，累計達三次本平台將暫停或終止該消費者之帳號使用權限。
                                         </p>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
                                             取餐時，消費者應配合店家之作業流程，並於取餐後當場確認食品狀況。
@@ -339,6 +272,9 @@ export default function TermsPage() {
                                 <p className="text-base leading-8 text-gray-700">
                                     本平台要求店家於上架時標示 Luckie Bag
                                     可能含有之常見過敏原，供消費者參考：
+                                </p>
+                                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+                                    台灣常見食物過敏原（依衛福部食藥署規定）
                                 </p>
                                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                                     {allergenItems.map((item) => (
@@ -366,18 +302,23 @@ export default function TermsPage() {
                             </Section>
 
                             <Section id="payment" title="第六條 付款方式">
-                                <BulletList
-                                    items={[
-                                        "本平台目前支援信用卡付款。消費者付款後，本平台將以信用卡授權方式完成交易。",
-                                        "金流手續費由本平台全額負擔，消費者無需額外支付。",
-                                        "所有交易均以新台幣（NTD）計價。",
-                                    ]}
-                                />
+                                <div className="space-y-4">
+                                    <p className="text-base leading-8 text-gray-700">
+                                        本平台採現場付款方式。消費者於 APP
+                                        完成預約後，須依指定取餐時段前往店家，並於現場完成付款，本平台不於線上代收任何款項。
+                                    </p>
+                                    <p className="text-base leading-8 text-gray-700">
+                                        現場付款方式依各店家現有之收款方式為準，可能包含現金、信用卡或行動支付等，實際可用之付款方式請以店家現場提供者為準。
+                                    </p>
+                                    <p className="text-base leading-8 text-gray-700">
+                                        所有交易均以新台幣（NTD）計價。
+                                    </p>
+                                </div>
                             </Section>
 
                             <Section
                                 id="complaint"
-                                title="第七條 申訴、退款與補償"
+                                title="第七條 申訴、費用爭議與補償"
                             >
                                 <div className="space-y-6">
                                     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -393,41 +334,63 @@ export default function TermsPage() {
 
                                     <div className="space-y-4">
                                         <h3 className="text-xl font-bold text-gray-900">
-                                            7.2 退款與補償標準
+                                            7.2 處理與補償標準
                                         </h3>
-                                        <TermsTable
-                                            headers={[
-                                                "情況",
-                                                "退款",
-                                                "補償",
-                                                "店家積點",
-                                            ]}
-                                            rows={refundRows}
-                                        />
                                         <p className="text-base leading-8 text-gray-700">
-                                            退款將退回消費者原付款之信用卡，或由本平台視情況提供等值之
-                                            FOODLUCK
-                                            折價券供消費者選擇。以信用卡退刷者，退款處理時間依各發卡銀行作業時間而定，通常為三至七個工作日；以折價券方式補償者，將於審核完成後立即發放至消費者帳號，有效期限另行標示於折價券上。
+                                            本平台依下列標準處理申訴：
+                                        </p>
+                                        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                                            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+                                                情況
+                                            </p>
+                                            <p className="mt-2 text-xl font-bold text-gray-900">
+                                                食物份量明顯不足
+                                            </p>
+                                            <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">
+                                                處理方式
+                                            </p>
+                                            <p className="mt-2 text-base leading-8 text-gray-700">
+                                                平台核發部分金額之折價券（由本平台審核認定）
+                                            </p>
+                                        </div>
+                                        <p className="text-base leading-8 text-gray-700">
+                                            折價券補償將於審核完成後立即發放至消費者帳號，可於下次消費時折抵使用，有效期限另行標示於折價券上。
+                                        </p>
+                                        <p className="text-base leading-8 text-gray-700">
+                                            因個人口味偏好所生之不滿意，或消費者自身逾時未取餐之情形，不適用本條補償機制。
                                         </p>
                                     </div>
 
                                     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                                         <h3 className="text-xl font-bold text-gray-900">
-                                            7.3 店家臨時取消訂單
+                                            7.3 食品安全事件之處理
                                         </h3>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
-                                            若店家因當日實際銷售情況無法提供已被預訂之
-                                            Luckie
-                                            Bag，本平台將主動取消該訂單並全額退款至消費者原付款信用卡，消費者無需另行申訴。退款處理時間依各發卡銀行作業時間而定。
+                                            若消費者於取餐後發現食品有腐敗、發霉、異味等明顯變質情形，請第一時間保留食品現狀（如尚未丟棄）及相關照片，並透過 APP 申訴功能或客服管道聯繫本平台。本平台將於收到通知後立即啟動審核程序，審核期間將先行提供全額退費，以保障消費者權益。
+                                        </p>
+                                        <p className="mt-3 text-base leading-8 text-gray-700">
+                                            若消費者因食用該食品產生身體不適，請儘速就醫並保留就醫紀錄，可一併提供予本平台作為後續處理依據。
+                                        </p>
+                                        <p className="mt-3 text-base leading-8 text-gray-700">
+                                            食品安全責任歸屬依法由製作該食品之店家負責，本平台將依與店家之合作條款進行相應處理（包含但不限於警告、扣除合作積點、終止合作關係）。
                                         </p>
                                     </div>
 
                                     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
                                         <h3 className="text-xl font-bold text-gray-900">
-                                            7.4 申訴審核
+                                            7.4 店家臨時取消訂單
                                         </h3>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
-                                            本平台將於收到申訴後三（3）個工作日內完成審核並通知結果。本平台之審核決定基於消費者提供之資訊及平台紀錄，如有不實申訴，本平台得拒絕退款及補償，並得暫停或終止申訴人之帳號。
+                                            若店家因當日實際銷售情況無法提供已被預訂之 Luckie Bag，本平台將主動取消該筆預約並通知消費者，並核發折價券作為補償。因本服務採現場付款方式，消費者尚未付款，無需另行申訴。
+                                        </p>
+                                    </div>
+
+                                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                                        <h3 className="text-xl font-bold text-gray-900">
+                                            7.5 申訴審核
+                                        </h3>
+                                        <p className="mt-3 text-base leading-8 text-gray-700">
+                                            本平台將於收到申訴後三（3）個工作日內完成審核並通知結果。本平台之審核決定基於消費者提供之資訊及平台紀錄，如有不實申訴，本平台得拒絕該次申訴及補償，並得暫停或終止申訴人之帳號。
                                         </p>
                                     </div>
                                 </div>
@@ -505,7 +468,7 @@ export default function TermsPage() {
                                     申請刪除帳號，終止使用本平台服務。帳號刪除後，您的個人資料將依本平台隱私權政策及法律規定之保存期限處理。
                                 </p>
                                 <p className="text-base leading-8 text-gray-700">
-                                    未完成之訂單或待處理之退款，將於帳號刪除前依正常程序完成處理。
+                                    未完成之預約或待處理之申訴，將於帳號刪除前依正常程序完成處理。
                                 </p>
                             </Section>
 
@@ -538,7 +501,7 @@ export default function TermsPage() {
                                         ],
                                         [
                                             "公司地址",
-                                            "臺北市中正區館前路 43 號 7 樓",
+                                            "臺北市中正區館前路43號7樓",
                                         ],
                                     ].map(([label, value]) => (
                                         <div
