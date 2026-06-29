@@ -37,17 +37,6 @@ export type StoreApplicationPayload = {
   description?: string;
   reason?: string;
   category_ids: number[];
-
-  // 收款帳戶——填寫
-  bank_code?: string;
-  bank_name?: string;
-  bank_branch_code?: string;
-  bank_branch_name?: string;
-  bank_account_number?: string;
-  bank_account_name?: string;
-
-  // 收款帳戶——上傳（File 物件，與「填寫」二擇一）
-  bank_book_image?: File;
 };
 
 export type StoreApplicationResult =
@@ -87,17 +76,6 @@ export async function submitStoreApplication(
 
   // 後端會把 string JSON 解開成陣列
   formData.append("category_ids", JSON.stringify(payload.category_ids));
-
-  if (payload.bank_book_image) {
-    formData.append("bank_book_image", payload.bank_book_image);
-  } else {
-    set("bank_code", payload.bank_code);
-    set("bank_name", payload.bank_name);
-    set("bank_branch_code", payload.bank_branch_code);
-    set("bank_branch_name", payload.bank_branch_name);
-    set("bank_account_number", payload.bank_account_number);
-    set("bank_account_name", payload.bank_account_name);
-  }
 
   const res = await fetch(`${API_BASE_URL}/store/applications`, {
     method: "POST",
