@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 const navLinks = [
   { label: "關於我們", href: "/#about" },
   { label: "給消費者", href: "/#consumers" },
-  { label: "給商家", href: "/#merchants" },
+  { label: "給商家", href: "/merchant-apply" },
+  { label: "常見問題", href: "/faq" },
   { label: "聯絡我們", href: "/#contact" },
 ];
 

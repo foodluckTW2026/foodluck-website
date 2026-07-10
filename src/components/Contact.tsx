@@ -58,80 +58,92 @@ export default function Contact() {
 
                     {/* Right: Form */}
                     {/* <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="name">
-                  姓名
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="你的名字"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                />
-              </div>
-            </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                                    htmlFor="name"
+                                >
+                                    稱呼
+                                </label>
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    required
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    placeholder="您的稱呼"
+                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                                    htmlFor="email"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    placeholder="you@example.com"
+                                    className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                                />
+                            </div>
+                        </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="role">
-                我的身份
-              </label>
-              <select
-                id="role"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all bg-white"
-              >
-                <option value="consumer">消費者</option>
-                <option value="merchant">商家／餐廳</option>
-                <option value="media">媒體／合作夥伴</option>
-                <option value="other">其他</option>
-              </select>
-            </div>
+                        <div>
+                            <label
+                                className="block text-sm font-medium text-gray-700 mb-1.5"
+                                htmlFor="role"
+                            >
+                                我的身份
+                            </label>
+                            <select
+                                id="role"
+                                name="role"
+                                value={formData.role}
+                                onChange={handleChange}
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all bg-white"
+                            >
+                                <option value="consumer">消費者</option>
+                                <option value="merchant">商家／餐廳</option>
+                                <option value="media">媒體／合作夥伴</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5" htmlFor="message">
-                訊息
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="告訴我們你想說的..."
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
-              />
-            </div>
+                        <div>
+                            <label
+                                className="block text-sm font-medium text-gray-700 mb-1.5"
+                                htmlFor="message"
+                            >
+                                訊息
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                required
+                                rows={5}
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="告訴我們你想說的..."
+                                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
+                            />
+                        </div>
 
-            <button
-              type="submit"
-              className="w-full bg-primary text-white font-semibold py-4 rounded-full hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-primary/20"
-            >
-              送出訊息
-            </button>
-          </form> */}
+                        <button
+                            type="submit"
+                            className="w-full bg-primary text-white font-semibold py-4 rounded-full hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-primary/20"
+                        >
+                            送出訊息
+                        </button>
+                    </form> */}
                 </div>
             </div>
         </section>
