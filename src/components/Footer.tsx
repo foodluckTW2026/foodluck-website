@@ -1,10 +1,7 @@
 import Link from "next/link";
+import LineContactLink from "@/components/LineContactLink";
 
-const socialLinks = [
-    { label: "Instagram", href: "#" },
-    { label: "Facebook", href: "#" },
-    { label: "LINE", href: "#" },
-];
+const lineOfficialAccount = "https://lin.ee/OUqBsHc";
 
 export default function Footer() {
     return (
@@ -24,18 +21,11 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    {/* Social Links */}
-                    {/* <div className="flex items-center gap-6">
-                        {socialLinks.map((link) => (
-                            <a
-                                key={link.label}
-                                href={link.href}
-                                className="text-sm text-gray-400 hover:text-white transition-colors"
-                            >
-                                {link.label}
-                            </a>
-                        ))}
-                    </div> */}
+                    <LineContactLink
+                        href={lineOfficialAccount}
+                        label="LINE客服"
+                        className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition-colors hover:border-[#06C755]/50 hover:bg-white/10"
+                    />
                 </div>
 
                 <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
