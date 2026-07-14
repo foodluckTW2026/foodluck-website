@@ -25,9 +25,6 @@ const benefits = [
 ];
 
 export default function ForConsumers() {
-    const handleClick = () => {
-        alert("籌備中，敬請期待!");
-    };
     return (
         <section id="consumers" className="py-24 bg-white">
             <div className="max-w-6xl mx-auto px-6">
@@ -74,16 +71,16 @@ export default function ForConsumers() {
                 {/* CTA */}
                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                     <a
+                        href="https://apps.apple.com/tw/app/foodluck-%E5%89%A9%E9%A3%9F%E6%B0%B8%E7%BA%8C%E5%AA%92%E5%90%88%E5%B9%B3%E5%8F%B0/id6763681592"
                         className="inline-flex items-center justify-center min-w-[220px] bg-primary text-white font-semibold px-10 py-4 rounded-full hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-primary/20 cursor-pointer"
-                        onClick={handleClick}
                     >
-                        APP STORE 下載
+                        iOS 下載
                     </a>
                     <a
+                        href="https://play.google.com/store/apps/details?id=com.foodluck2026.customer&hl=zh_TW"
                         className="inline-flex items-center justify-center min-w-[220px] bg-primary text-white font-semibold px-10 py-4 rounded-full hover:bg-primary/90 hover:-translate-y-0.5 transition-all duration-200 shadow-lg shadow-primary/20 cursor-pointer"
-                        onClick={handleClick}
                     >
-                        GOOGLE PLAY 下載
+                        Android 下載
                     </a>
                 </div>
             </div>
