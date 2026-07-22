@@ -32,7 +32,11 @@ const consumerAppRows = [
         "APP 日誌、錯誤代碼（已去識別化）",
         "APP 發生異常時由 Firebase Crashlytics 自動蒐集",
     ],
-    ["違規紀錄", "逾時未取餐次數、警告及停權紀錄", "系統依消費者取餐紀錄自動產生"],
+    [
+        "違規紀錄",
+        "逾時未取餐次數、警告及停權紀錄",
+        "系統依消費者取餐紀錄自動產生",
+    ],
 ];
 
 const merchantAppRows = [
@@ -273,16 +277,15 @@ export default function PrivacyPage() {
                                 FOODLUCK 隱私權政策
                             </h1>
                             <div className="space-y-2 text-base leading-8 text-white/80 md:text-lg">
-                                <p>版本：1.1</p>
-                                <p>最後更新日期：115 年 6 月 23 日</p>
-                                <p>
-                                    適用範圍：FOODLUCK APP 及官方網站
-                                </p>
+                                <p>版本：1.2</p>
+                                <p>最後更新日期：115 年 7 月 22 日</p>
+                                <p>適用範圍：FOODLUCK APP 及官方網站</p>
                             </div>
                             <p className="max-w-2xl text-base leading-8 text-white/85 md:text-lg">
                                 本隱私權政策說明 FOODLUCK
                                 福來科技有限公司如何蒐集、處理、利用及保護您在使用
-                                FOODLUCK APP 及官方網站（以下合稱「本服務」）時所提供或產生之個人資料。請於使用本服務前詳細閱讀本政策。
+                                FOODLUCK APP
+                                及官方網站（以下合稱「本服務」）時所提供或產生之個人資料。請於使用本服務前詳細閱讀本政策。
                             </p>
                         </div>
                     </div>
@@ -468,7 +471,8 @@ export default function PrivacyPage() {
                                             5.1 信用卡資料之特別說明（店家版）
                                         </h3>
                                         <p className="mt-3 text-base leading-8 text-gray-700">
-                                            消費者於本服務採現場付款方式，本公司不蒐集、不儲存、不接觸消費者之任何付款資料。店家版之月結手續費收取則由 PAYUNi（統一金流）直接處理店家綁定之信用卡扣款，本公司不儲存、不接觸店家信用卡卡號或完整付款資訊，僅保有扣款結果（成功／失敗）及金額等必要資訊。
+                                            消費者於本服務採現場付款方式，本公司不蒐集、不儲存、不接觸消費者之任何付款資料。店家版之月結手續費收取則由
+                                            PAYUNi（統一金流）直接處理店家綁定之信用卡扣款，本公司不儲存、不接觸店家信用卡卡號或完整付款資訊，僅保有扣款結果（成功／失敗）及金額等必要資訊。
                                         </p>
                                     </div>
                                 </div>
