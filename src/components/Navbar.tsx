@@ -1,102 +1,162 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const navLinks = [
-  { label: "關於我們", href: "/#about" },
-  { label: "給消費者", href: "/#consumers" },
-  { label: "給商家", href: "/merchant-apply" },
-  { label: "常見問題", href: "/faq" },
-  { label: "聯絡我們", href: "/#contact" },
+    { label: "關於我們", href: "/#about" },
+    { label: "給消費者", href: "/#consumers" },
+    { label: "給商家", href: "/merchant-apply" },
+    { label: "常見問題", href: "/faq" },
+    { label: "聯絡我們", href: "/#contact" },
+];
+
+const socialLinks = [
+    {
+        icon: "/fb-icon.png",
+        href: "https://www.facebook.com/profile.php?id=61591980749216",
+        alt: "Facebook",
+    },
+    {
+        icon: "/ig-icon.png",
+        href: "https://www.instagram.com/foodluck_tw/",
+        alt: "Instagram",
+    },
+    {
+        icon: "/threads-icon.png",
+        href: "https://www.threads.com/@foodluck_tw",
+        alt: "Threads",
+    },
+    {
+        icon: "/line-brand-icon.png",
+        href: "https://line.me/R/ti/p/@259pptsv?ts=05122303&oat_content=url",
+        alt: "Line",
+    },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 40);
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
-  return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white shadow-sm" : "bg-transparent"
-      }`}
-    >
-      <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span
-            className={`text-2xl font-black tracking-tight transition-colors duration-300 ${
-              scrolled ? "text-primary" : "text-white"
+    return (
+        <header
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+                scrolled ? "bg-white shadow-sm" : "bg-transparent"
             }`}
-          >
-            FOODLUCK
-          </span>
-        </Link>
-
-        {/* Desktop Links */}
-        <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
-                  scrolled ? "text-gray-700" : "text-white/90"
-                }`}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden flex flex-col gap-1.5 p-1"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="開啟選單"
         >
-          <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
-              scrolled ? "bg-gray-800" : "bg-white"
-            } ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
-              scrolled ? "bg-gray-800" : "bg-white"
-            } ${menuOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 transition-all duration-300 ${
-              scrolled ? "bg-gray-800" : "bg-white"
-            } ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
-          />
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4">
-          <ul className="flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-gray-800 font-medium hover:text-primary transition-colors"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.label}
+            <nav className="max-w-8xl mx-auto px-6 py-4 flex items-center justify-between">
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-2">
+                    <Image
+                        src="/icon.png"
+                        alt="FOODLUCK"
+                        width={40}
+                        height={40}
+                    />
+                    <span
+                        className={`text-2xl font-black tracking-tight transition-colors duration-300 ${
+                            scrolled ? "text-primary" : "text-white"
+                        }`}
+                    >
+                        FOODLUCK
+                    </span>
                 </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </header>
-  );
+
+                {/* Desktop Links */}
+                <ul className="hidden md:flex items-center gap-8">
+                    {navLinks.map((link) => (
+                        <li key={link.href}>
+                            <Link
+                                href={link.href}
+                                className={`text-sm font-medium transition-colors duration-300 hover:text-primary ${
+                                    scrolled ? "text-gray-700" : "text-white/90"
+                                }`}
+                            >
+                                {link.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+                <ul className="hidden md:flex items-center gap-4">
+                    {socialLinks.map((link) => (
+                        <li key={link.href}>
+                            <Link href={link.href}>
+                                <Image
+                                    src={link.icon}
+                                    alt={link.href}
+                                    width={24}
+                                    height={24}
+                                    className="w-6 h-6"
+                                />
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden flex flex-col gap-1.5 p-1"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    aria-label="開啟選單"
+                >
+                    <span
+                        className={`block w-6 h-0.5 transition-all duration-300 ${
+                            scrolled ? "bg-gray-800" : "bg-white"
+                        } ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
+                    />
+                    <span
+                        className={`block w-6 h-0.5 transition-all duration-300 ${
+                            scrolled ? "bg-gray-800" : "bg-white"
+                        } ${menuOpen ? "opacity-0" : ""}`}
+                    />
+                    <span
+                        className={`block w-6 h-0.5 transition-all duration-300 ${
+                            scrolled ? "bg-gray-800" : "bg-white"
+                        } ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`}
+                    />
+                </button>
+            </nav>
+
+            {/* Mobile Menu */}
+            {menuOpen && (
+                <div className="md:hidden bg-white border-t border-gray-100 px-6 py-4">
+                    <ul className="flex flex-col gap-4">
+                        {navLinks.map((link) => (
+                            <li key={link.href}>
+                                <Link
+                                    href={link.href}
+                                    className="text-gray-800 font-medium hover:text-primary transition-colors"
+                                    onClick={() => setMenuOpen(false)}
+                                >
+                                    {link.label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                    <ul className="flex gap-4 mt-4">
+                        {socialLinks.map((link) => (
+                            <li key={link.href}>
+                                <Link href={link.href}>
+                                    <Image
+                                        src={link.icon}
+                                        alt={link.href}
+                                        width={24}
+                                        height={24}
+                                        className="w-6 h-6"
+                                    />
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </header>
+    );
 }
