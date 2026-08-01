@@ -38,11 +38,9 @@ const initialState: FormState = {
 
 export default function MerchantApplicationForm() {
     const [form, setForm] = useState<FormState>(initialState);
-
     const [categories, setCategories] = useState<Category[]>([]);
     const [loadingCategories, setLoadingCategories] = useState(true);
     const [categoryError, setCategoryError] = useState<string | null>(null);
-
     const [submitting, setSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string[]>>({});
     const [topError, setTopError] = useState<string | null>(null);
@@ -50,6 +48,7 @@ export default function MerchantApplicationForm() {
 
     useEffect(() => {
         let cancelled = false;
+
         fetchCategories()
             .then((data) => {
                 if (!cancelled) {
@@ -59,9 +58,7 @@ export default function MerchantApplicationForm() {
             })
             .catch(() => {
                 if (!cancelled) {
-                    setCategoryError(
-                        "無法載入餐點類型，請稍後再試或重新整理頁面。",
-                    );
+                    setCategoryError("無法載入餐點類型，請稍後再試或重新整理頁面。");
                 }
             })
             .finally(() => {
@@ -69,36 +66,45 @@ export default function MerchantApplicationForm() {
                     setLoadingCategories(false);
                 }
             });
+
         return () => {
             cancelled = true;
         };
     }, []);
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => {
-        const { name, value } = e.target;
-        setForm((prev) => ({ ...prev, [name]: value }));
+        const { name, value } = event.target;
+        setForm((previous) => ({ ...previous, [name]: value }));
     };
 
     const toggleCategory = (id: number) => {
-        setForm((prev) => {
-            const exists = prev.category_ids.includes(id);
-            if (exists) {
+        setForm((previous) => {
+            const selected = previous.category_ids.includes(id);
+
+            if (selected) {
                 return {
-                    ...prev,
-                    category_ids: prev.category_ids.filter((cid) => cid !== id),
+                    ...previous,
+                    category_ids: previous.category_ids.filter(
+                        (categoryId) => categoryId !== id,
+                    ),
                 };
             }
-            if (prev.category_ids.length >= 3) {
-                return prev;
+
+            if (previous.category_ids.length >= 3) {
+                return previous;
             }
-            return { ...prev, category_ids: [...prev.category_ids, id] };
+
+            return {
+                ...previous,
+                category_ids: [...previous.category_ids, id],
+            };
         });
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
         if (submitting) return;
 
         setSubmitting(true);
@@ -138,47 +144,34 @@ export default function MerchantApplicationForm() {
     };
 
     const fieldError = (key: string): string | null => {
-        const list = errors[key];
-        return list && list.length > 0 ? list[0] : null;
+        const messages = errors[key];
+        return messages && messages.length > 0 ? messages[0] : null;
     };
 
     if (success) {
         return (
-            <div className="rounded-3xl border border-primary/20 bg-primary/5 p-10 text-center">
-                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-7 w-7"
-                    >
-                        <path d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <h2 className="text-2xl font-black text-gray-900 mb-3">
+            <div
+                className="rounded-3xl border border-primary/20 bg-primary/5 p-8 text-center md:p-12"
+                role="status"
+            >
+                <p className="text-sm font-bold text-primary">
+                    資料已成功送達
+                </p>
+                <h2 className="mt-3 text-2xl font-black text-gray-900 md:text-3xl">
                     申請已送出
                 </h2>
-                <p className="text-gray-600 leading-8">
-                    感謝您加入 FOODLUCK！
-                    <br />
-                    我們將於 3 個工作天內完成申請審核，審核結果會寄送至您填寫的
-                    Email 信箱。
-                    <br />
-                    若未收到通知信件，也請記得查看垃圾郵件或促銷內容分類喔！
+                <p className="mx-auto mt-4 max-w-lg text-sm leading-7 text-gray-600">
+                    我們會在 3 個工作天內完成初步審核，並將結果寄到你填寫的 Email。若未收到信件，請查看垃圾郵件或促銷內容分類。
                 </p>
-                <p className="mt-4 text-sm text-gray-500">
-                    申請編號：#{success.id}
+                <p className="mt-4 text-xs text-gray-500">
+                    申請編號 #{success.id}
                 </p>
                 <button
                     type="button"
                     onClick={() => setSuccess(null)}
-                    className="mt-8 inline-flex items-center justify-center rounded-full border-2 border-primary px-8 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
+                    className="mt-8 inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full border-2 border-primary px-7 py-3 text-sm font-bold text-primary transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary hover:text-white active:translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
                 >
-                    再送出一筆申請
+                    填寫另一家店
                 </button>
             </div>
         );
@@ -187,172 +180,220 @@ export default function MerchantApplicationForm() {
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-6 rounded-3xl border border-gray-200 bg-white p-8 shadow-sm md:p-10"
+            className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm md:p-10"
             noValidate
         >
             {topError && (
-                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                <div
+                    className="mb-8 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-700"
+                    role="alert"
+                >
                     {topError}
                 </div>
             )}
 
-            <Field
-                label="店家名稱"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                error={fieldError("name")}
-                required
-                placeholder="例：幸福麵包坊"
-            />
+            <fieldset>
+                <legend className="mb-6 text-xl font-black text-gray-900">
+                    店家基本資料
+                </legend>
 
-            <div className="grid gap-6 md:grid-cols-2">
-                <Field
-                    label="負責人姓名"
-                    name="owner_name"
-                    value={form.owner_name}
-                    onChange={handleChange}
-                    error={fieldError("owner_name")}
-                    required
-                    placeholder="例：王小明"
-                />
-                <Field
-                    label="食品業者登錄字號"
-                    name="food_business_license_number"
-                    value={form.food_business_license_number}
-                    onChange={handleChange}
-                    error={fieldError("food_business_license_number")}
-                    required
-                    placeholder="例：A-123-456789-00000-0"
-                />
-            </div>
+                <div className="space-y-6">
+                    <Field
+                        label="店家名稱"
+                        name="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        error={fieldError("name")}
+                        required
+                        autoComplete="organization"
+                        placeholder="例：幸福麵包坊"
+                    />
 
-            <div className="grid gap-6 md:grid-cols-2">
-                <Field
-                    label="聯絡 Email"
-                    name="email"
-                    type="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    error={fieldError("email")}
-                    required
-                    placeholder="merchant@example.com"
-                />
-                <Field
-                    label="聯絡電話"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    error={fieldError("phone")}
-                    required
-                    placeholder="例：0912345678"
-                    inputMode="tel"
-                />
-            </div>
-
-            <Field
-                label="店家地址"
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                error={fieldError("address")}
-                required
-                placeholder="例：台北市中正區忠孝東路一段 1 號"
-            />
-
-            <div className="grid gap-6 md:grid-cols-2">
-                <Field
-                    label="統一編號（選填）"
-                    name="tax_id"
-                    value={form.tax_id}
-                    onChange={handleChange}
-                    error={fieldError("tax_id")}
-                    placeholder="8 碼數字，如有公司行號請填寫"
-                    inputMode="numeric"
-                    maxLength={8}
-                />
-                <Field
-                    label="公司登記名稱（選填）"
-                    name="company_name"
-                    value={form.company_name}
-                    onChange={handleChange}
-                    error={fieldError("company_name")}
-                    placeholder="例：幸福食品有限公司"
-                />
-            </div>
-
-            <div>
-                <label className="mb-2 block text-sm font-semibold text-gray-800">
-                    餐點類型 <span className="text-red-500">*</span>
-                    <span className="ml-2 text-xs font-normal text-gray-500">
-                        可複選，最多 3 項
-                    </span>
-                </label>
-                {loadingCategories ? (
-                    <p className="text-sm text-gray-500">載入中…</p>
-                ) : categoryError ? (
-                    <p className="text-sm text-red-600">{categoryError}</p>
-                ) : (
-                    <div className="flex flex-wrap gap-2">
-                        {categories.map((cat) => {
-                            const selected = form.category_ids.includes(cat.id);
-                            const disabled =
-                                !selected && form.category_ids.length >= 3;
-                            return (
-                                <button
-                                    key={cat.id}
-                                    type="button"
-                                    onClick={() => toggleCategory(cat.id)}
-                                    disabled={disabled}
-                                    className={`rounded-full border px-4 py-2 text-sm font-medium transition-all ${
-                                        selected
-                                            ? "border-primary bg-primary text-white shadow-sm shadow-primary/20"
-                                            : disabled
-                                              ? "border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed"
-                                              : "border-gray-300 bg-white text-gray-700 hover:border-primary hover:text-primary"
-                                    }`}
-                                >
-                                    {cat.name}
-                                </button>
-                            );
-                        })}
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <Field
+                            label="負責人姓名"
+                            name="owner_name"
+                            value={form.owner_name}
+                            onChange={handleChange}
+                            error={fieldError("owner_name")}
+                            required
+                            autoComplete="name"
+                            placeholder="例：王小明"
+                        />
+                        <Field
+                            label="食品業者登錄字號"
+                            name="food_business_license_number"
+                            value={form.food_business_license_number}
+                            onChange={handleChange}
+                            error={fieldError("food_business_license_number")}
+                            required
+                            placeholder="例：A-123-456789-00000-0"
+                        />
                     </div>
-                )}
-                {fieldError("category_ids") && (
-                    <p className="mt-2 text-sm text-red-600">
-                        {fieldError("category_ids")}
-                    </p>
-                )}
-            </div>
 
-            <Textarea
-                label="店家簡介（選填）"
-                name="description"
-                value={form.description}
-                onChange={handleChange}
-                error={fieldError("description")}
-                placeholder="簡單介紹店家的特色、招牌商品..."
-                rows={3}
-            />
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <Field
+                            label="聯絡 Email"
+                            name="email"
+                            type="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            error={fieldError("email")}
+                            required
+                            autoComplete="email"
+                            placeholder="merchant@example.com"
+                        />
+                        <Field
+                            label="聯絡電話"
+                            name="phone"
+                            value={form.phone}
+                            onChange={handleChange}
+                            error={fieldError("phone")}
+                            required
+                            autoComplete="tel"
+                            placeholder="例：0912345678"
+                            inputMode="tel"
+                        />
+                    </div>
 
-            <Textarea
-                label="想加入 FOODLUCK 的原因（選填）"
-                name="reason"
-                value={form.reason}
-                onChange={handleChange}
-                error={fieldError("reason")}
-                placeholder="告訴我們你的故事，協助我們更快了解你的品牌"
-                rows={3}
-            />
+                    <Field
+                        label="店家地址"
+                        name="address"
+                        value={form.address}
+                        onChange={handleChange}
+                        error={fieldError("address")}
+                        required
+                        autoComplete="street-address"
+                        placeholder="例：台北市中正區忠孝東路一段 1 號"
+                    />
 
-            <p className="text-xs leading-6 text-gray-500">
-                送出申請即表示您同意 FOODLUCK 為審核目的處理您所提供之資料，
-                詳細內容請參閱
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <Field
+                            label="統一編號"
+                            optional
+                            name="tax_id"
+                            value={form.tax_id}
+                            onChange={handleChange}
+                            error={fieldError("tax_id")}
+                            placeholder="8 碼數字"
+                            inputMode="numeric"
+                            maxLength={8}
+                        />
+                        <Field
+                            label="公司登記名稱"
+                            optional
+                            name="company_name"
+                            value={form.company_name}
+                            onChange={handleChange}
+                            error={fieldError("company_name")}
+                            autoComplete="organization"
+                            placeholder="例：幸福食品有限公司"
+                        />
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset className="mt-10 border-t border-gray-200 pt-9">
+                <legend className="px-0 text-xl font-black text-gray-900">
+                    餐點與品牌
+                </legend>
+
+                <div className="mt-6">
+                    <div className="mb-3 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                        <p className="text-sm font-bold text-gray-800">
+                            餐點類型 <span className="text-red-500">*</span>
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            最多選擇 3 項
+                        </p>
+                    </div>
+
+                    {loadingCategories ? (
+                        <div className="flex flex-wrap gap-2" aria-label="正在載入餐點類型">
+                            {[72, 92, 80, 104, 76].map((width) => (
+                                <span
+                                    key={width}
+                                    className="h-10 rounded-full bg-gray-100 motion-safe:animate-pulse"
+                                    style={{ width }}
+                                />
+                            ))}
+                        </div>
+                    ) : categoryError ? (
+                        <p className="text-sm text-red-600" role="alert">
+                            {categoryError}
+                        </p>
+                    ) : categories.length === 0 ? (
+                        <p className="rounded-xl border border-gray-200 bg-gray-50 p-4 text-sm text-gray-500">
+                            目前沒有可選擇的餐點類型，請稍後再試。
+                        </p>
+                    ) : (
+                        <div className="flex flex-wrap gap-2">
+                            {categories.map((category) => {
+                                const selected = form.category_ids.includes(category.id);
+                                const disabled =
+                                    !selected && form.category_ids.length >= 3;
+
+                                return (
+                                    <button
+                                        key={category.id}
+                                        type="button"
+                                        onClick={() => toggleCategory(category.id)}
+                                        disabled={disabled}
+                                        aria-pressed={selected}
+                                        className={`rounded-full border px-4 py-2.5 text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 ${
+                                            selected
+                                                ? "border-primary bg-primary text-white shadow-sm shadow-primary/20"
+                                                : disabled
+                                                  ? "cursor-not-allowed border-gray-200 bg-gray-50 text-gray-400"
+                                                  : "border-gray-300 bg-white text-gray-700 hover:border-primary hover:text-primary"
+                                        }`}
+                                    >
+                                        {category.name}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {fieldError("category_ids") && (
+                        <p className="mt-2 text-sm text-red-600" role="alert">
+                            {fieldError("category_ids")}
+                        </p>
+                    )}
+                </div>
+
+                <div className="mt-6 space-y-6">
+                    <Textarea
+                        label="店家簡介"
+                        optional
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                        error={fieldError("description")}
+                        placeholder="簡單介紹店家的特色與招牌商品"
+                        rows={3}
+                    />
+
+                    <Textarea
+                        label="想加入 FOODLUCK 的原因"
+                        optional
+                        name="reason"
+                        value={form.reason}
+                        onChange={handleChange}
+                        error={fieldError("reason")}
+                        placeholder="告訴我們你的需求，協助我們更快了解你的品牌"
+                        rows={3}
+                    />
+                </div>
+            </fieldset>
+
+            <p className="mt-8 text-xs leading-6 text-gray-500">
+                送出申請即表示你同意 FOODLUCK 為審核目的處理所提供的資料。詳細內容請參閱
                 <a
                     href="/privacy"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="ml-1 text-primary hover:underline"
+                    className="ml-1 font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
                 >
                     隱私權政策
                 </a>
@@ -362,9 +403,9 @@ export default function MerchantApplicationForm() {
             <button
                 type="submit"
                 disabled={submitting}
-                className="w-full rounded-full bg-primary py-4 text-base font-semibold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-primary/60 disabled:hover:translate-y-0"
+                className="mt-6 inline-flex min-h-14 w-full items-center justify-center whitespace-nowrap rounded-full bg-primary px-8 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary/90 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2"
             >
-                {submitting ? "送出中…" : "送出申請"}
+                {submitting ? "正在送出..." : "立即申請"}
             </button>
         </form>
     );
@@ -374,13 +415,15 @@ type FieldProps = {
     label: string;
     name: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     error: string | null;
     required?: boolean;
+    optional?: boolean;
     type?: string;
     placeholder?: string;
     inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
     maxLength?: number;
+    autoComplete?: string;
 };
 
 function Field({
@@ -390,19 +433,21 @@ function Field({
     onChange,
     error,
     required,
+    optional,
     type = "text",
     placeholder,
     inputMode,
     maxLength,
+    autoComplete,
 }: FieldProps) {
+    const errorId = `${name}-error`;
+
     return (
         <div>
-            <label
-                htmlFor={name}
-                className="mb-2 block text-sm font-semibold text-gray-800"
-            >
+            <label htmlFor={name} className="mb-2 block text-sm font-bold text-gray-800">
                 {label}
                 {required && <span className="ml-1 text-red-500">*</span>}
+                {optional && <span className="ml-2 text-xs font-normal text-gray-500">選填</span>}
             </label>
             <input
                 id={name}
@@ -413,13 +458,20 @@ function Field({
                 placeholder={placeholder}
                 inputMode={inputMode}
                 maxLength={maxLength}
-                className={`w-full rounded-xl border bg-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                autoComplete={autoComplete}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
+                className={`w-full rounded-xl border bg-white px-4 py-3.5 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2 focus:ring-primary/30 ${
                     error
-                        ? "border-red-300 focus:border-red-400"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
                         : "border-gray-200 focus:border-primary"
                 }`}
             />
-            {error && <p className="mt-1.5 text-sm text-red-600">{error}</p>}
+            {error && (
+                <p id={errorId} className="mt-2 text-sm text-red-600" role="alert">
+                    {error}
+                </p>
+            )}
         </div>
     );
 }
@@ -428,8 +480,9 @@ type TextareaProps = {
     label: string;
     name: string;
     value: string;
-    onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     error: string | null;
+    optional?: boolean;
     placeholder?: string;
     rows?: number;
 };
@@ -440,16 +493,17 @@ function Textarea({
     value,
     onChange,
     error,
+    optional,
     placeholder,
     rows = 3,
 }: TextareaProps) {
+    const errorId = `${name}-error`;
+
     return (
         <div>
-            <label
-                htmlFor={name}
-                className="mb-2 block text-sm font-semibold text-gray-800"
-            >
+            <label htmlFor={name} className="mb-2 block text-sm font-bold text-gray-800">
                 {label}
+                {optional && <span className="ml-2 text-xs font-normal text-gray-500">選填</span>}
             </label>
             <textarea
                 id={name}
@@ -458,13 +512,19 @@ function Textarea({
                 onChange={onChange}
                 placeholder={placeholder}
                 rows={rows}
-                className={`w-full resize-none rounded-xl border bg-white px-4 py-3 text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/30 ${
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? errorId : undefined}
+                className={`w-full resize-y rounded-xl border bg-white px-4 py-3.5 text-sm text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-2 focus:ring-primary/30 ${
                     error
-                        ? "border-red-300 focus:border-red-400"
+                        ? "border-red-300 focus:border-red-400 focus:ring-red-100"
                         : "border-gray-200 focus:border-primary"
                 }`}
             />
-            {error && <p className="mt-1.5 text-sm text-red-600">{error}</p>}
+            {error && (
+                <p id={errorId} className="mt-2 text-sm text-red-600" role="alert">
+                    {error}
+                </p>
+            )}
         </div>
     );
 }
