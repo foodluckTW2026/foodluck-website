@@ -33,7 +33,7 @@ export type StoreApplicationPayload = {
   address: string;
   tax_id?: string;
   company_name?: string;
-  food_business_license_number: string;
+  food_business_license_number?: string;
   description?: string;
   reason?: string;
   category_ids: number[];
