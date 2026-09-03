@@ -117,9 +117,13 @@ export default function MerchantApplicationForm() {
             email: form.email.trim(),
             phone: form.phone.trim(),
             address: form.address.trim(),
-            food_business_license_number:
-                form.food_business_license_number.trim(),
             category_ids: form.category_ids,
+            ...(form.food_business_license_number.trim()
+                ? {
+                      food_business_license_number:
+                          form.food_business_license_number.trim(),
+                  }
+                : {}),
             ...(form.tax_id.trim() ? { tax_id: form.tax_id.trim() } : {}),
             ...(form.company_name.trim()
                 ? { company_name: form.company_name.trim() }
@@ -222,11 +226,11 @@ export default function MerchantApplicationForm() {
                         />
                         <Field
                             label="食品業者登錄字號"
+                            optional
                             name="food_business_license_number"
                             value={form.food_business_license_number}
                             onChange={handleChange}
                             error={fieldError("food_business_license_number")}
-                            required
                             placeholder="例：A-123-456789-00000-0"
                         />
                     </div>
