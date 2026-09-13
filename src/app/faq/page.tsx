@@ -149,7 +149,7 @@ const faqSections: FaqSection[] = [
             {
                 question: "價格與內容物有何規範？",
                 answer: [
-                    "您可以用單一或多種品項組成一份 Luckie Bag，售價需設定在原價 7 折以下。",
+                    "您可以用單一或多種品項組成一份 Luckie Bag，售價需設定在店內價格之85折以下。",
                     "上架時也請務必勾選常見過敏原，協助消費者更安全地選購。",
                 ],
             },
@@ -222,9 +222,9 @@ const faqSections: FaqSection[] = [
 ];
 
 export const metadata: Metadata = {
-  title: "常見問題 | FOODLUCK",
-  description:
-    "查看 FOODLUCK 消費者與商家的常見問題，快速了解預訂、取餐、上架、核銷與合作流程。",
+    title: "常見問題 | FOODLUCK",
+    description:
+        "查看 FOODLUCK 消費者與商家的常見問題，快速了解預訂、取餐、上架、核銷與合作流程。",
 };
 
 const lineOfficialAccount = "https://lin.ee/OUqBsHc";
