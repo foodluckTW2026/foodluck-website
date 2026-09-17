@@ -30,7 +30,7 @@ const consumerAppRows = [
     [
         "系統錯誤紀錄",
         "APP 日誌、錯誤代碼（已去識別化）",
-        "APP 發生異常時由 Firebase Crashlytics 自動蒐集",
+        "APP 發生異常時由 Sentry 自動蒐集",
     ],
     [
         "違規紀錄",
@@ -65,7 +65,7 @@ const merchantAppRows = [
     [
         "系統錯誤紀錄",
         "APP 日誌、錯誤代碼（已去識別化）",
-        "APP 發生異常時由 Firebase Crashlytics 自動蒐集",
+        "APP 發生異常時由 Sentry 自動蒐集",
     ],
 ];
 
