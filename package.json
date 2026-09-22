@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:test": "wrangler deploy --env test",
+    "deploy:prod": "wrangler deploy --env production",
+    "preview": "wrangler dev --env test",
+    "check:worker": "tsc -p tsconfig.worker.json"
   },
   "dependencies": {
     "next": "15.2.3",
@@ -14,14 +18,16 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260922.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.0.1",
     "eslint": "^9",
     "eslint-config-next": "15.2.3",
+    "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5",
-    "autoprefixer": "^10.0.1",
-    "postcss": "^8"
+    "wrangler": "^4.136.2"
   }
 }

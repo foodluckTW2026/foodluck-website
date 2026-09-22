@@ -1,21 +1,9 @@
 import type { NextConfig } from "next";
 
-const pagesBaseUrl = process.env.PAGES_BASE_URL;
-const normalizedBasePath = (() => {
-  if (!pagesBaseUrl) {
-    return undefined;
-  }
-
-  try {
-    const { pathname } = new URL(pagesBaseUrl);
-    return pathname === "/" ? undefined : pathname.replace(/\/$/, "");
-  } catch {
-    return undefined;
-  }
-})();
-
+// 官網以 Cloudflare Workers（static assets）服務，永遠在網域根路徑，不再需要 GitHub Pages 的 basePath。
 const nextConfig: NextConfig = {
   output: "export",
+  trailingSlash: true,
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -33,8 +21,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  basePath: normalizedBasePath,
-  assetPrefix: normalizedBasePath ? `${normalizedBasePath}/` : undefined,
 };
 
 export default nextConfig;

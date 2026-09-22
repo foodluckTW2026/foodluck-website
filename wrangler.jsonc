@@ -1,0 +1,61 @@
+{
+  // 官網 + 店家 QR App Links（#277）
+  //   - 靜態站：next build → ./out，由 Workers static assets 服務
+  //   - worker 處理 www 轉址、/.well-known/*（iOS / Android 驗證檔）與 /s/*（店家 QR 導引：手機轉商店、其他顯示頁面），其餘交給 assets
+  //   - 兩個環境：production（foodluck.com.tw / www）、test（www-test.foodluck.com.tw），各自一組 App 識別
+  // 部署：GitHub Actions（.github/workflows/deploy.yml）→ wrangler deploy --env <production|test>
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "foodluck-website",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // 全部請求先進 worker（www → apex 轉址需要看到所有路徑），靜態檔由 worker 交給 ASSETS
+    "run_worker_first": true
+  },
+  "observability": { "enabled": true },
+  "env": {
+    "production": {
+      "name": "foodluck-website",
+      "routes": [
+        { "pattern": "foodluck.com.tw/*", "zone_name": "foodluck.com.tw" },
+        { "pattern": "www.foodluck.com.tw/*", "zone_name": "foodluck.com.tw" }
+      ],
+      "vars": {
+        "SITE_HOST": "foodluck.com.tw",
+        // www → apex 301（沿用 GitHub Pages 時期的行為）；改成 "0" 就讓 www 直接服務
+        "WWW_REDIRECT": "1",
+        // iOS：<TEAM_ID>.<bundle id>，多個用逗號
+        "IOS_APP_IDS": "MTK3M5ZHV6.com.foodluck2026.customer",
+        "ANDROID_PACKAGE": "com.foodluck2026.customer",
+        // Google Play Console → App integrity → App signing key certificate 的 SHA-256（不是 upload key），多個用逗號
+        "ANDROID_SHA256": "REPLACE_WITH_PLAY_APP_SIGNING_SHA256",
+        "APP_STORE_ID": "6763681592",
+        "IOS_STORE_URL": "https://apps.apple.com/tw/app/id6763681592",
+        "ANDROID_STORE_URL": "https://play.google.com/store/apps/details?id=com.foodluck2026.customer&hl=zh_TW",
+        // 手機 UA 是否直接 302 到商店（"0" = 一律顯示導引頁）
+        "STORE_REDIRECT": "1"
+      }
+    },
+    "test": {
+      "name": "foodluck-website-test",
+      "routes": [
+        { "pattern": "www-test.foodluck.com.tw/*", "zone_name": "foodluck.com.tw" }
+      ],
+      "vars": {
+        "SITE_HOST": "www-test.foodluck.com.tw",
+        "WWW_REDIRECT": "0",
+        "IOS_APP_IDS": "MTK3M5ZHV6.com.foodluck2026.customer.preview",
+        "ANDROID_PACKAGE": "com.foodluck2026.customer.preview",
+        "ANDROID_SHA256": "REPLACE_WITH_PREVIEW_SIGNING_SHA256",
+        "APP_STORE_ID": "",
+        // preview 版不在商店：填 TestFlight 公開連結 / Play 內測連結，或留空 + STORE_REDIRECT=0 只顯示頁面
+        "IOS_STORE_URL": "",
+        "ANDROID_STORE_URL": "",
+        "STORE_REDIRECT": "0"
+      }
+    }
+  }
+}
