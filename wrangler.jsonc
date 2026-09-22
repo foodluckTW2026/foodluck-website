@@ -44,7 +44,7 @@
         "ANDROID_PACKAGE": "com.foodluck2026.customer",
         // Google Play Console → App integrity → App signing key certificate 的 SHA-256（不是 upload key），多個用逗號。
         // ⚠️ 空值時 assetlinks.json 回 404（Android 驗證會失敗、已裝 App 的人會被導去商店）— 上線前一定要填
-        "ANDROID_SHA256": "REPLACE_WITH_PLAY_APP_SIGNING_SHA256",
+        "ANDROID_SHA256": "C4:CF:22:B2:AA:9A:2F:D6:75:40:90:62:B0:20:10:25:6F:FF:97:F4:9F:C7:6E:CB:1E:12:FC:4C:74:2F:8E:F0",
         "APP_STORE_ID": "6763681592",
         "IOS_STORE_URL": "https://apps.apple.com/tw/app/id6763681592",
         "ANDROID_STORE_URL": "https://play.google.com/store/apps/details?id=com.foodluck2026.customer&hl=zh_TW",
