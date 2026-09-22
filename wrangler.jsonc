@@ -5,7 +5,8 @@
   //   - 兩個環境：production（foodluck.com.tw / www）、test（www-test.foodluck.com.tw），各自一組 App 識別
   // 部署：GitHub Actions（.github/workflows/deploy.yml）→ wrangler deploy --env <production|test>
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "foodluck-website",
+  // 頂層只給本機 wrangler dev 用；正式／測試一定要 --env，名稱刻意不同，避免漏打 --env 覆蓋正式 worker
+  "name": "foodluck-website-dev",
   "main": "src/worker.ts",
   "compatibility_date": "2026-09-01",
   "assets": {
@@ -16,6 +17,17 @@
     "run_worker_first": true
   },
   "observability": { "enabled": true },
+  "vars": {
+    "SITE_HOST": "localhost",
+    "WWW_REDIRECT": "0",
+    "IOS_APP_IDS": "MTK3M5ZHV6.com.foodluck2026.customer.preview",
+    "ANDROID_PACKAGE": "com.foodluck2026.customer.preview",
+    "ANDROID_SHA256": "",
+    "APP_STORE_ID": "",
+    "IOS_STORE_URL": "",
+    "ANDROID_STORE_URL": "",
+    "STORE_REDIRECT": "0"
+  },
   "env": {
     "production": {
       "name": "foodluck-website",
@@ -30,7 +42,8 @@
         // iOS：<TEAM_ID>.<bundle id>，多個用逗號
         "IOS_APP_IDS": "MTK3M5ZHV6.com.foodluck2026.customer",
         "ANDROID_PACKAGE": "com.foodluck2026.customer",
-        // Google Play Console → App integrity → App signing key certificate 的 SHA-256（不是 upload key），多個用逗號
+        // Google Play Console → App integrity → App signing key certificate 的 SHA-256（不是 upload key），多個用逗號。
+        // ⚠️ 空值時 assetlinks.json 回 404（Android 驗證會失敗、已裝 App 的人會被導去商店）— 上線前一定要填
         "ANDROID_SHA256": "REPLACE_WITH_PLAY_APP_SIGNING_SHA256",
         "APP_STORE_ID": "6763681592",
         "IOS_STORE_URL": "https://apps.apple.com/tw/app/id6763681592",

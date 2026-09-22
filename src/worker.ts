@@ -23,11 +23,17 @@ export interface Env {
 
 const STORE_CODE = /^\/s\/([A-Za-z0-9_-]{4,64})\/?$/;
 
-const list = (value: string): string[] =>
-    value
+const list = (value: string | undefined): string[] =>
+    (value ?? "")
         .split(",")
         .map((v) => v.trim())
         .filter((v) => v.length > 0 && !v.startsWith("REPLACE_WITH"));
+
+/** 驗證檔沒設定（占位／空值）時明確回 404 並記 log，不要端出空陣列讓 Apple/Google 靜靜驗證失敗。 */
+const notConfigured = (what: string): Response => {
+    console.error(`[app-links] ${what} is not configured (empty list) — check wrangler.jsonc vars for this env`);
+    return new Response("not configured", { status: 404, headers: { "cache-control": "no-store" } });
+};
 
 const json = (body: unknown): Response =>
     new Response(JSON.stringify(body), {
@@ -92,16 +98,21 @@ export default {
     async fetch(request: Request, env: Env): Promise<Response> {
         const url = new URL(request.url);
 
+        // 驗證檔放在 www 轉址之前：Apple CDN 抓 AASA 不跟轉址，www 與 apex 都要能直接拿到
+        if (url.pathname === "/.well-known/apple-app-site-association") {
+            const aasa = appleAppSiteAssociation(env);
+            return aasa.applinks.details[0].appIDs.length ? json(aasa) : notConfigured("IOS_APP_IDS");
+        }
+        if (url.pathname === "/.well-known/assetlinks.json") {
+            const links = assetLinks(env);
+            return links[0].target.sha256_cert_fingerprints.length && links[0].target.package_name
+                ? json(links)
+                : notConfigured("ANDROID_SHA256 / ANDROID_PACKAGE");
+        }
+
         if (env.WWW_REDIRECT === "1" && url.hostname === `www.${env.SITE_HOST}`) {
             url.hostname = env.SITE_HOST;
             return Response.redirect(url.toString(), 301);
-        }
-
-        if (url.pathname === "/.well-known/apple-app-site-association") {
-            return json(appleAppSiteAssociation(env));
-        }
-        if (url.pathname === "/.well-known/assetlinks.json") {
-            return json(assetLinks(env));
         }
 
         const match = STORE_CODE.exec(url.pathname);

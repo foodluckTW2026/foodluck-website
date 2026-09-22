@@ -33,6 +33,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Type-check worker
+        run: npm run check:worker
+
       - name: Build static export
         run: npm run build
 
