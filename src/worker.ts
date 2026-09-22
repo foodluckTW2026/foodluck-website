@@ -21,7 +21,7 @@ export interface Env {
     STORE_REDIRECT: string;
 }
 
-const STORE_CODE = /^\/s\/([A-Za-z0-9]{4,32})\/?$/;
+const STORE_CODE = /^\/s\/([A-Za-z0-9_-]{4,64})\/?$/;
 
 const list = (value: string): string[] =>
     value

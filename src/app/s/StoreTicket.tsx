@@ -10,7 +10,7 @@ export default function StoreTicket() {
     const [code, setCode] = useState<string | null>(null);
 
     useEffect(() => {
-        const match = /^\/s\/([A-Za-z0-9]{4,32})\/?$/.exec(window.location.pathname);
+        const match = /^\/s\/([A-Za-z0-9_-]{4,64})\/?$/.exec(window.location.pathname);
         setCode(match ? match[1].toUpperCase() : null);
     }, []);
 
